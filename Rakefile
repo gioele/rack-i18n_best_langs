@@ -11,10 +11,10 @@ rescue LoadError
 end
 
 Bones {
-	name     'rack-i18n-best-langs'
+	name     'rack-i18n_best_langs'
 	authors  'Gioele Barabucci'
 	email    'gioele@svario.it'
-	url      'https://github.com/gioele/rack-i18n-best-langs'
+	url      'https://github.com/gioele/rack-i18n_best_langs'
 
 	version  '0.2.dev'
 

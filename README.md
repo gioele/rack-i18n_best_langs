@@ -1,12 +1,12 @@
-rack-i8n-best-langs: guess best language for content served over Rack
+rack-i8n_best_langs: guess best language for content served over Rack
 =====================================================================
 
-rack-i18n-best-langs is a Rack middleware component that takes care of
+rack-i18n_best_langs is a Rack middleware component that takes care of
 understanding what are the best languages for a site visitor.
 
 If you manage a site that has content many languages and also localized URLs,
-you will find `rack-i18n-best-langs` very useful, especially when used in
-conjunction with `rack-i18n-routes`.
+you will find `rack-i18n_best_langs` very useful, especially when used in
+conjunction with `rack-i18n_routes`.
 
 
 Features
@@ -16,7 +16,7 @@ Language discovery is done using three clues:
 
 * the presences of language tags in paths (e.g. `/service/warranty/ita`),
 * the content of the HTTP `Accept-Language` header,
-* the content of the `rack.i18n-best-langs` cookie when set.
+* the content of the `rack.i18n_best_langs` cookie when set.
 
 All these clues are taken into account and evaluated against the list
 of languages available and their preferred order. It is possible to configure
@@ -31,7 +31,7 @@ Spanish, `/articles/la-victoire` is French.
 Examples
 --------
 
-rack-i18n-best-langs works like any other Rack middleware component.
+rack-i18n_best_langs works like any other Rack middleware component.
 
     # in your server.ru rackup file
     FAVORITE_LANGUAGES = %w(eng spa deu fra)
@@ -41,7 +41,7 @@ rack-i18n-best-langs works like any other Rack middleware component.
 
 In your application you will find the list of languages that should be used to
 serve the content, arranged from the most favorite to the least in the
-`rack.i18n-best-langs` Rack variable. It is then up to downstream application
+`rack.i18n_best_langs` Rack variable. It is then up to downstream application
 to use this information in the best way.
 
 ### See the guessed languages
@@ -54,7 +54,7 @@ This small application
     use Rack::I18nBestLangs, FAVORITE_LANGUAGES
 
     app = Proc.new do |env|
-        langs = env['rack.i18n-best-langs']
+        langs = env['rack.i18n_best_langs']
         [200, {"Content-Type" => "text/plain"}, [langs.inspect] ]
     end
 
@@ -140,7 +140,7 @@ No requirements outside Ruby >= 1.8.7 and Rack.
 Install
 -------
 
-    gem install rack-i18n-discovery
+    gem install rack-i18n_best_langs
 
 
 Author
@@ -152,13 +152,13 @@ Development
 -----------
 
 Code
-: <https://github.com/gioele/rack-i18n-best-langs>
+: <https://github.com/gioele/rack-i18n_best_langs>
 
 Report issues
-: <https://github.com/gioele/rack-i18n-best-langs/issues>
+: <https://github.com/gioele/rack-i18n_best_langs/issues>
 
 Documentation
-: <http://rubydoc.info/gems/rack-i18n-best-langs>
+: <http://rubydoc.info/gems/rack-i18n_best_langs>
 
 
 License

@@ -9,7 +9,7 @@ require 'rack/language_tag.rb'
 module Rack
 
 class I18nBestLangs
-	RACK_VARIABLE = 'rack.i18n-best-langs'
+	RACK_VARIABLE = 'rack.i18n_best_langs'
 
 	# Create a new I18nBestLangs middleware component.
 	#
