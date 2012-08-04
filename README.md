@@ -34,6 +34,8 @@ Examples
 rack-i18n_best_langs works like any other Rack middleware component.
 
     # in your server.ru rackup file
+    require 'rack/i18n_best_langs'
+
     FAVORITE_LANGUAGES = %w(eng spa deu fra)
 
     use Rack::I18nBestLangs, FAVORITE_LANGUAGES
@@ -49,6 +51,8 @@ to use this information in the best way.
 This small application
 
     # in your server.ru rackup file
+    require 'rack/i18n_best_langs'
+
     FAVORITE_LANGUAGES = %w(eng spa deu)
 
     use Rack::I18nBestLangs, FAVORITE_LANGUAGES
@@ -106,6 +110,9 @@ If you want to use the content of the URI path as an additional clue to guess
 the best languages, use an `AliasMapping` function as path lookup function.
 
     # in your server.ru rackup file
+    require 'rack/i18n_best_langs'
+    require 'rack/i18n_routes/alias_mapping'
+
     FAVORITE_LANGUAGES = %w(eng spa deu fra)
 
     aliases = {
