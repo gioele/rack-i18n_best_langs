@@ -156,7 +156,7 @@ class I18nBestLangs
 		end
 
 		ph, aliases_langs = @path_mapping_fn.map_with_langs(path)
-		aliases_langs.reject! { |lang| lang == 'unk' }.map! { |tag| LanguageTag.parse(tag) }
+		aliases_langs.map! { |tag| LanguageTag.parse(tag) }
 
 		lang_uses = aliases_langs.inject(Hash.new(0)) {|freq, lang| freq[lang] += 1; freq }
 		lang_uses.sort_by { |lang, freq| -freq }.each do |lang, freq|
