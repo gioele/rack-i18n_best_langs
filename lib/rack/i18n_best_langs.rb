@@ -19,10 +19,12 @@ class I18nBestLangs
 	# @option opts [Hash{Symbol => Integer}] :weights Weights for clues
 	#                                                 (the higher, the most
 	#                                                 important): `:header`,
-	#                                                 `:path`, `:cookie`.
-	# @option opts [Proc] :path_lookup_fn A function that maps localized
-	#                                     URI paths into normalized paths,
-	#                                     should be a Rack::I18nRoutes::AliasMapping.
+	#                                                 `:path`, `:cookie`, `:aliases_path`.
+	# @option opts [#map_with_langs] :path_mapping_fn A function that maps
+	#                                                 localized URI paths
+	#                                                 into normalized paths,
+	#                                                 should be a
+	#                                                 Rack::I18nRoutes::AliasMapping.
 
 	def initialize(app, avail_languages, opts = {})
 		@app = app
@@ -30,13 +32,15 @@ class I18nBestLangs
 		score_base = avail_languages.length
 
 		weights = opts[:weights] || {}
-		weight_header = weights[:header] || 1
-		weight_path   = weights[:path]   || 2
-		weight_cookie = weights[:cookie] || 3
+		weight_header       = weights[:header]       || 1
+		weight_aliases_path = weights[:aliases_path] || 2
+		weight_path         = weights[:path]         || 3
+		weight_cookie       = weights[:cookie]       || 4
 
-		@score_for_header = score_base * (10 ** weight_header)
-		@score_for_path   = score_base * (10 ** weight_path)
-		@score_for_cookie = score_base * (10 ** weight_cookie)
+		@score_for_header       = score_base * (10 ** weight_header)
+		@score_for_aliases_path = score_base * (10 ** weight_aliases_path)
+		@score_for_path         = score_base * (10 ** weight_path)
+		@score_for_cookie       = score_base * (10 ** weight_cookie)
 
 		@avail_languages = {}
 		avail_languages.each_with_index do |lang, i|
@@ -48,7 +52,7 @@ class I18nBestLangs
 
 		@language_path_regex = regex_for_languages_in_path
 
-		@path_lookup = opts[:path_lookup_fn] || Proc.new { |path| path }
+		@path_mapping_fn = opts[:path_mapping_fn]
 	end
 
 	def call(env)
@@ -70,6 +74,7 @@ class I18nBestLangs
 		add_score_for_path(path, langs)
 		add_score_for_accept_language_header(accept_language_header, langs)
 		add_score_for_cookie(cookies, langs)
+		add_score_for_aliases_path(path, langs)
 
 		sorted_langs = langs.to_a.sort_by { |lang_info| -(lang_info[1]) }.map(&:first)
 
@@ -142,6 +147,24 @@ class I18nBestLangs
 
 			importance = idx + 1
 			langs[lang] += @score_for_cookie * importance
+		end
+	end
+
+	def add_score_for_aliases_path(path, langs)
+		if !@path_mapping_fn.respond_to?(:map_with_langs)
+			return
+		end
+
+		ph, aliases_langs = @path_mapping_fn.map_with_langs(path)
+		aliases_langs.reject! { |lang| lang == 'unk' }.map! { |tag| LanguageTag.parse(tag) }
+
+		lang_uses = aliases_langs.inject(Hash.new(0)) {|freq, lang| freq[lang] += 1; freq }
+		lang_uses.sort_by { |lang, freq| -freq }.each do |lang, freq|
+			if !langs.include?(lang)
+				next
+			end
+
+			langs[lang] += @score_for_aliases_path * freq
 		end
 	end
 

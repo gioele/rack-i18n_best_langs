@@ -22,6 +22,7 @@ Bones {
 
 	depend_on 'rack'
 	depend_on 'rack-test', :development => true
+	depend_on 'rack-i18n_routes', :development => true
 	depend_on 'bones-rspec', :development => true
 }
 

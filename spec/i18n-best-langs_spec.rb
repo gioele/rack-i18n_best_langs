@@ -24,7 +24,6 @@ describe Rack::I18nBestLangs do
 	def request_with(path, env_opts = {}, *i18n_opts)
 		if i18n_opts.empty?
 			extra_opts = {}
-			extra_opts[:path_lookup_fn] = Proc.new { |orig_path| orig_path }
 
 			i18n_opts << AVAIL_LANGUAGES # known_languages
 			i18n_opts << extra_opts
@@ -42,6 +41,12 @@ describe Rack::I18nBestLangs do
 
 	def cookie_langs(*langs)
 		{ 'HTTP_COOKIE' => Rack::I18nBestLangs::RACK_VARIABLE + "=" + langs.flatten.join(',') }
+	end
+
+	def aliases_mapping(aliases, default)
+		mapping = Rack::I18nRoutes::AliasMapping.new(aliases, :default => default)
+
+		return { :path_mapping_fn => mapping }
 	end
 
 	context "with no external information" do
@@ -109,6 +114,18 @@ describe Rack::I18nBestLangs do
 			languages = env[Rack::I18nBestLangs::RACK_VARIABLE]
 
 			languages.first.should == 'eng'
+		end
+	end
+
+	context "with language implied in path and AliasMapper" do
+		let (:aliases) { { 'house' => { 'ita' =>  'casa', 'fra' => 'maison' } } }
+		let (:default_lang) { 'unk' }
+
+		it "places the most common non-default language as best language" do
+			env = request_with('/maison', {}, AVAIL_LANGUAGES, aliases_mapping(aliases, default_lang)).env
+			languages = env[Rack::I18nBestLangs::RACK_VARIABLE]
+
+			languages.first.should == 'fra'
 		end
 	end
 end

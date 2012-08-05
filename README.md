@@ -132,9 +132,9 @@ the best languages, use an `AliasMapping` function as path lookup function.
             }
         }
     }
-    PATH_FN = Rack::I18nRoutes::AliasMapping.for(paths, :default => 'eng')
+    MAPPING = Rack::I18nRoutes::AliasMapping.new(paths, :default => 'eng')
 
-    use Rack::I18nBestLangs, FAVORITE_LANGUAGES, :path_lookup_fn => PATH_FN
+    use Rack::I18nBestLangs, FAVORITE_LANGUAGES, :path_lookup_fn => MAPPING
     run MyApp
 
 
