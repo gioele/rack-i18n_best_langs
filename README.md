@@ -103,11 +103,10 @@ You can change these weight with the `:weights` option.
     use Rack::I18nBestLangs, FAVORITE_LANGUAGES, :weights => WEIGHTS
 
 
-
 ### Using `AliasMapping`
 
 If you want to use the content of the URI path as an additional clue to guess
-the best languages, use an `AliasMapping` function as path lookup function.
+the best languages, use an `AliasMapping` function as path mapping function.
 
     # in your server.ru rackup file
     require 'rack/i18n_best_langs'
@@ -120,7 +119,7 @@ the best languages, use an `AliasMapping` function as path lookup function.
             'fra' => 'articles',
             'spa' => ['artículos', 'articulos']
 
-            '_subdirs' => {
+            :children => {
                 'the-victory' => {
                     'fra' => 'la-victoire',
                     'spa' => 'la-victoria'
@@ -134,7 +133,7 @@ the best languages, use an `AliasMapping` function as path lookup function.
     }
     MAPPING = Rack::I18nRoutes::AliasMapping.new(paths, :default => 'eng')
 
-    use Rack::I18nBestLangs, FAVORITE_LANGUAGES, :path_lookup_fn => MAPPING
+    use Rack::I18nBestLangs, FAVORITE_LANGUAGES, :path_mapping_fn => MAPPING
     run MyApp
 
 
