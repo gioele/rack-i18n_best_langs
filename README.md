@@ -22,10 +22,11 @@ All these clues are taken into account and evaluated against the list
 of languages available and their preferred order. It is possible to configure
 which of these clues is the most important.
 
-An additional clue is available when `AliasMapping` is used as the mapping
-function: the language in which the path is written. For
-example, `/articles/the-victory` is English, `/artículos/la-victoria`, is
-Spanish, `/articles/la-victoire` is French.
+An additional clue is available when `AliasMapping` (part of
+[rack-i18n_routes](http://rubydoc.info/gems/rack-i18n_routes)) is used as the
+mapping function: the language in which the path is written. For example,
+`/articles/the-victory` is English, `/artículos/la-victoria`, is Spanish,
+`/articles/la-victoire` is French.
 
 
 Examples
