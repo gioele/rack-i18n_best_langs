@@ -30,8 +30,34 @@ which of these clues is the most important.
 An additional clue is available when `AliasMapping` (part of
 [rack-i18n_routes](http://rubydoc.info/gems/rack-i18n_routes)) is used as the
 mapping function: the language in which the path is written. For example,
-`/articles/the-victory` is English, `/artículos/la-victoria`, is Spanish,
-`/articles/la-victoire` is French.
+`/articles/the-victory` add preference of English, `/artículos/la-victoria`
+for Spanish and `/articles/la-victoire` for French.
+
+
+How it works
+------------
+
+Each request is analysed in search for possible clues that can expose what
+are the best languages to use in the content served in response. Each clue
+contributes part of the final score of each language; the score is amplified
+by the weight associated to the clue.
+
+For example, if a person requests the URL `/article/vittoria/ita` from
+a browser in a German internet point (thus sending `Accept-Language: de-DE`),
+their request would lead to the following scores:
+
+* ita: 315 = 0 (not in header) + 15 (partially lang of uri) + 300 (path ends in '/ita')
+* eng: 15 = 0 (not in header) + 15 (partially lang of uri) + 0 (path does not end in '/eng')
+* ger: 3 = 3 (in header) + 0 (not lang of uri) + 0 (path does not end in '/ger')
+
+The downstream application will find the guessed languages in the
+`rack.i18n_best_langs` env variable, in order of importance.
+
+    env['rack.i18n_best_langs'] # => [ 'ita', 'eng', 'ger' ]
+
+At this point, it is up to the application to choose what to do, either change
+the locale using the `i18n` gem, set up its own locale management system or
+just keep track of this information.
 
 
 Examples
