@@ -118,8 +118,8 @@ describe Rack::I18nBestLangs do
 	end
 
 	context "with language implied in path and AliasMapper" do
-		let (:aliases) { { 'house' => { 'ita' =>  'casa', 'fra' => 'maison' } } }
-		let (:default_lang) { 'unk' }
+		let(:aliases) { Hash['house' => { 'ita' =>  'casa', 'fra' => 'maison' }] }
+		let(:default_lang) { 'unk' }
 
 		it "places the most common non-default language as best language" do
 			env = request_with('/maison', {}, AVAIL_LANGUAGES, aliases_mapping(aliases, default_lang)).env
