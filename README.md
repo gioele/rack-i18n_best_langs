@@ -46,9 +46,12 @@ For example, if a person requests the URL `/article/vittoria/ita` from
 a browser in a German internet point (thus sending `Accept-Language: de-DE`),
 their request would lead to the following scores:
 
-* ita: 315 = 0 (not in header) + 15 (partially lang of uri) + 300 (path ends in '/ita')
-* eng: 15 = 0 (not in header) + 15 (partially lang of uri) + 0 (path does not end in '/eng')
-* ger: 3 = 3 (in header) + 0 (not lang of uri) + 0 (path does not end in '/ger')
+* `ita`: 315 = 0 (not in header) + 15 (partially language of URL) + 300 (path
+   ends in `/ita`);
+* `eng`: 15 = 0 (not in header) + 15 (partially language of URL) + 0 (path
+   does not end in `/eng`);
+* `ger`: 3 = 3 (in header) + 0 (not language of URL) + 0 (path does not end
+   in `/ger`).
 
 The downstream application will find the guessed languages in the
 `rack.i18n_best_langs` env variable, in order of importance.
