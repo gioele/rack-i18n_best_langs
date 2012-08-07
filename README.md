@@ -8,6 +8,11 @@ If you manage a site that has content many languages and also localized URLs,
 you will find `rack-i18n_best_langs` very useful, especially when used in
 conjunction with `rack-i18n_routes`.
 
+Differently from other similar Rack middleware components,
+`rack-i18n_best_langs` returns a list of languages in order of guessed
+importance, not a single language. Also, it does not require the use of the
+`i18n` gem.
+
 
 Features
 --------
