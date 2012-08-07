@@ -103,6 +103,7 @@ You can change these weight with the `:weights` option.
 
     use Rack::I18nBestLangs, FAVORITE_LANGUAGES, :weights => WEIGHTS
 
+To disable the use of any of the clues, set its weight to zero.
 
 ### Using `AliasMapping`
 
