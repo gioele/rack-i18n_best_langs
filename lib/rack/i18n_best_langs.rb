@@ -3,12 +3,11 @@
 # See the `COPYING` file or <http://creativecommons.org/publicdomain/zero/1.0/>
 # for more details.
 
+require 'rack'
 
 require 'rack/language_tag.rb'
 
-module Rack
-
-class I18nBestLangs
+class Rack::I18nBestLangs
 	RACK_VARIABLE = 'rack.i18n_best_langs'
 
 	# Create a new I18nBestLangs middleware component.
@@ -57,7 +56,7 @@ class I18nBestLangs
 
 	def call(env)
 		lang_info = find_best_languages(env)
-		env[I18nBestLangs::RACK_VARIABLE] = lang_info[:languages]
+		env[RACK_VARIABLE] = lang_info[:languages]
 		env['PATH_INFO'] = lang_info[:path_info]
 
 		return @app.call(env)
@@ -98,7 +97,7 @@ class I18nBestLangs
 	end
 
 	def extract_language_cookie(env)
-		return Rack::Request.new(env).cookies[I18nBestLangs::RACK_VARIABLE]
+		return Rack::Request.new(env).cookies[RACK_VARIABLE]
 	end
 
 	def remove_language_from_path(path)
@@ -208,6 +207,4 @@ class I18nBestLangs
 	end
 
 	HEADER_FORMAT = self.accept_language_format
-end
-
 end
