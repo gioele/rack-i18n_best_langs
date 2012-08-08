@@ -151,11 +151,11 @@ class I18nBestLangs
 	end
 
 	def add_score_for_aliases_path(path, langs)
-		if !@path_mapping_fn.respond_to?(:map_with_langs)
+		if !@path_mapping_fn.respond_to?(:path_analysis)
 			return
 		end
 
-		ph, aliases_langs = @path_mapping_fn.map_with_langs(path)
+		ph, translation, aliases_langs = @path_mapping_fn.path_analysis(path)
 		aliases_langs.map! { |tag| LanguageTag.parse(tag) }
 
 		lang_uses = aliases_langs.inject(Hash.new(0)) {|freq, lang| freq[lang] += 1; freq }
