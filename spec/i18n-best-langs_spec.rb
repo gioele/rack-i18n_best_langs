@@ -29,7 +29,7 @@ describe Rack::I18nBestLangs do
 			i18n_opts << extra_opts
 		end
 
-		session = Rack::Test::Session.new(Rack::MockSession.new(app(*i18n_opts)))
+		session = Rack::Test::Session.new(app(*i18n_opts))
 	        session.request(path, env_opts)
 
         	return session.last_request
