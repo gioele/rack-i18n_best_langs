@@ -128,5 +128,15 @@ describe Rack::I18nBestLangs do
 			languages.first.should == 'fra'
 		end
 	end
+
+	context "with malformed headers" do
+		it "warns of malformed ACCEPT_LANGUAGE" do
+			env = request_with('/test', { 'HTTP_ACCEPT_LANGUAGE' => 'fobar/1a' }).env
+
+			# FIXME: simplify code, https://github.com/brynary/rack-test/issues/61
+			errors = env['rack.errors'].instance_variable_get(:@error).instance_variable_get(:@error).string
+			errors.should include('malformed Accept-Language')
+		end
+	end
 end
 

@@ -92,12 +92,12 @@ class Rack::I18nBestLangs
 	def extract_language_header(env)
 		header = env['HTTP_ACCEPT_LANGUAGE']
 
-		if (header =~ HEADER_FORMAT)
-			return header
-		else
-			# FIXME: env.warn
-			return ""
+		if !(header =~ HEADER_FORMAT)
+			env["rack.errors"].puts("Warning: malformed Accept-Language header")
+			return nil
 		end
+
+		return header
 	end
 
 	def extract_language_cookie(env)
