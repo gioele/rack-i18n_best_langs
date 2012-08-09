@@ -8,7 +8,7 @@ require 'rack'
 require 'rack/language_tag.rb'
 
 class Rack::I18nBestLangs
-	RACK_VARIABLE = 'rack.i18n_best_langs'
+	RACK_VARIABLE = 'rack.i18n_best_langs'.freeze
 
 	# Create a new I18nBestLangs middleware component.
 	#
@@ -48,8 +48,9 @@ class Rack::I18nBestLangs
 
 			@avail_languages[code] = score
 		end
+		@avail_languages.freeze
 
-		@language_path_regex = regex_for_languages_in_path
+		@language_path_regex = regex_for_languages_in_path.freeze
 
 		@path_mapping_fn = opts[:path_mapping_fn]
 	end
@@ -206,5 +207,5 @@ class Rack::I18nBestLangs
 		return Regexp.new("\\A#{lang}#{qvalue}?(, ?#{lang}#{qvalue}?)*\\Z")
 	end
 
-	HEADER_FORMAT = self.accept_language_format
+	HEADER_FORMAT = self.accept_language_format.freeze
 end
