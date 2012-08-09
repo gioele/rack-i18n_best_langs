@@ -59,6 +59,7 @@ class Rack::I18nBestLangs
 
 	def call(env)
 		lang_info = find_best_languages(env)
+
 		env[RACK_VARIABLE] = lang_info[:languages]
 		env['PATH_INFO'] = lang_info[:path_info]
 
