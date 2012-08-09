@@ -10,8 +10,8 @@ conjunction with [`rack-i18n_routes`](https://github.com/gioele/rack-i18n_routes
 
 Differently from other similar Rack middleware components,
 `rack-i18n_best_langs` returns a list of languages in order of guessed
-importance, not a single language. Also, it does not require the use of the
-`i18n` gem.
+importance, not a single language. Also, it does not require Rails or
+the `i18n` gem.
 
 
 Features
