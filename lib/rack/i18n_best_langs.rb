@@ -10,6 +10,13 @@ require 'rack/language_tag.rb'
 class Rack::I18nBestLangs
 	RACK_VARIABLE = 'rack.i18n_best_langs'.freeze
 
+	DEFAULT_WEIGHTS = {
+		:header => 1,
+		:aliases_path => 2,
+		:path => 3,
+		:cookie => 4,
+	}.freeze
+
 	# Create a new I18nBestLangs middleware component.
 	#
 	# @param [[String]] avail_languages
@@ -30,16 +37,11 @@ class Rack::I18nBestLangs
 
 		score_base = avail_languages.length
 
-		weights = opts[:weights] || {}
-		weight_header       = weights[:header]       || 1
-		weight_aliases_path = weights[:aliases_path] || 2
-		weight_path         = weights[:path]         || 3
-		weight_cookie       = weights[:cookie]       || 4
-
-		@score_for_header       = score_base * (10 ** weight_header)
-		@score_for_aliases_path = score_base * (10 ** weight_aliases_path)
-		@score_for_path         = score_base * (10 ** weight_path)
-		@score_for_cookie       = score_base * (10 ** weight_cookie)
+		weights = opts[:weights] || DEFAULT_WEIGHTS
+		@score_for_header       = score_base * (10 ** weights[:header])
+		@score_for_aliases_path = score_base * (10 ** weights[:aliases_path])
+		@score_for_path         = score_base * (10 ** weights[:path])
+		@score_for_cookie       = score_base * (10 ** weights[:cookie])
 
 		@avail_languages = {}
 		avail_languages.each_with_index do |lang, i|
