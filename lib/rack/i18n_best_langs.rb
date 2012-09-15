@@ -142,6 +142,7 @@ class Rack::I18nBestLangs
 		end
 
 		cookie_langs = cookie.split(',').map { |tag| LanguageTag.parse(tag) }
+		cookie_langs.compact!
 
 		cookie_langs.reverse.each_with_index do |lang, idx|
 			if !langs.include?(lang)
@@ -160,6 +161,7 @@ class Rack::I18nBestLangs
 
 		ph, translation, aliases_langs = @path_mapping_fn.path_analysis(path)
 		aliases_langs.map! { |tag| LanguageTag.parse(tag) }
+		aliases_langs.compact!
 
 		lang_uses = aliases_langs.inject(Hash.new(0)) {|freq, lang| freq[lang] += 1; freq }
 		lang_uses.sort_by { |lang, freq| -freq }.each do |lang, freq|
@@ -187,7 +189,10 @@ class Rack::I18nBestLangs
 
 			sorting_epsilon = (langs.size - i).to_f / 100
 			l[1] += sorting_epsilon # keep the original order when sorting
+
+			if l[0].nil? then break nil end
 		end
+		langs.compact!
 
 		return langs
 	end

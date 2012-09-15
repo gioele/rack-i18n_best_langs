@@ -17,15 +17,20 @@ class LanguageTag
 		'ita' => 'it',
 	}
 
+#	class UnparseableLanguageTag < Exception; end
+#	class UnknownLanguageTagError < Exception; end
+
 	def self.parse(raw_code)
 		iso_code = raw_code.split('-').flatten.first
 
 		if iso_code.nil?
-			raise "Unparseable language tag"
+			return nil
+			# raise UnparseableLanguageTag, "Unparseable language tag" # FIXME
 		end
 
 		if !(A3_TO_A2.keys + A3_TO_A2.values).include?(iso_code)
-			raise "Unknown language tag #{iso_code}" #FIXME
+			return nil
+			# raise UnknownLanguageTagError, "Unknown language tag #{iso_code}" # FIXME
 		end
 
 		return LanguageTag.new(iso_code)
