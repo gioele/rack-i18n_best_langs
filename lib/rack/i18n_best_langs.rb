@@ -97,6 +97,19 @@ class Rack::I18nBestLangs
 			return nil
 		end
 
+		# FIXME: merge this code and the one in add_score_for_accept_language_header
+		raw_langs = header.split(',')
+
+		langs = raw_langs.map { |l| l.sub('q=', '')}.
+		                      map { |l| l.split(';') }
+
+		langs.each do |lang_info|
+			tag = LanguageTag.parse(lang_info[0])
+			if tag.nil?
+				env["rack.errors"].puts("Warning: unknown language '#{lang_info[0]}' in Accept-Language header")
+			end
+		end
+
 		return header
 	end
 
@@ -187,10 +200,12 @@ class Rack::I18nBestLangs
 			l[0] = LanguageTag.parse(l[0])
 			l[1] = (l[1] || 1).to_f
 
+			if l[0].nil?
+				next
+			end
+
 			sorting_epsilon = (langs.size - i).to_f / 100
 			l[1] += sorting_epsilon # keep the original order when sorting
-
-			if l[0].nil? then break nil end
 		end
 		langs.compact!
 

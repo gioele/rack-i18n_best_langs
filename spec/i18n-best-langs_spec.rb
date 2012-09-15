@@ -138,5 +138,22 @@ describe Rack::I18nBestLangs do
 			errors.should include('malformed Accept-Language')
 		end
 	end
+
+	context "with unknown languages" do
+		it "ignores unknown language tags" do
+			env = request_with('/test', { 'HTTP_ACCEPT_LANGUAGE' => 'ja-JP;q=0.9,en;q=0.3,it;q=0.1' }).env
+			languages = env[Rack::I18nBestLangs::RACK_VARIABLE]
+
+			languages.first.should == 'eng'
+		end
+
+		it "warns of unknown language tags" do
+			env = request_with('/test', { 'HTTP_ACCEPT_LANGUAGE' => 'ja-JP;q=0.9,en;q=0.3,it;q=0.1' }).env
+
+			# FIXME: simplify code, https://github.com/brynary/rack-test/issues/61
+			errors = env['rack.errors'].instance_variable_get(:@error).instance_variable_get(:@error).string
+			errors.should include('unknown language')
+		end
+	end
 end
 
