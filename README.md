@@ -30,8 +30,8 @@ which of these clues is the most important.
 An additional clue is available when `AliasMapping` (part of
 [rack-i18n_routes](http://rubydoc.info/gems/rack-i18n_routes)) is used as the
 mapping function: the language in which the path is written. For example,
-`/articles/the-victory` add preference of English, `/artículos/la-victoria`
-for Spanish and `/articles/la-victoire` for French.
+`/articles/the-victory` implies that the user has a preferences for English,
+`/artículos/la-victoria` for Spanish and `/articles/la-victoire` for French.
 
 
 How it works
@@ -66,7 +66,7 @@ just keep track of this information.
 Examples
 --------
 
-rack-i18n_best_langs works like any other Rack middleware component.
+`rack-i18n_best_langs` works like any other Rack middleware component.
 
     # in your server.ru rackup file
     require 'rack/i18n_best_langs'
@@ -189,6 +189,7 @@ Author
 ------
 
 * Gioele Barabucci <http://svario.it/gioele> (initial author)
+
 
 Development
 -----------
